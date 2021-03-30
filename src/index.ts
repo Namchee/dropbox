@@ -1,5 +1,9 @@
 import { Game, AUTO } from 'phaser';
 
+import { HomeScene } from './scenes/home';
+import { GameScene } from './scenes/game';
+import { ResultScene } from './scenes/result';
+
 const config = {
   type: AUTO,
   width: 800,
@@ -10,7 +14,8 @@ const config = {
       gravity: { y: 200 }
     }
   },
-  parent: ''
+  parent: 'game',
+  scene: [HomeScene, GameScene, ResultScene],
 };
 
 new Game(config);
