@@ -1,16 +1,18 @@
 import Phaser from 'phaser';
 
+import WebFontFile from './font-loader';
+
 export function preload(scene: Phaser.Scene): void {
   scene.load.image('background', 'bg-pattern.png');
   scene.load.spritesheet('terrain', 'terrain.png', {
     frameWidth: 16, frameHeight: 16,
   });
 
-  scene.load.spritesheet('chara', 'chara.png', {
+  scene.load.spritesheet('player', 'player.png', {
     frameWidth: 32, frameHeight: 32,
   });
   
-  scene.load.spritesheet('chara-run', 'chara-run.png', {
+  scene.load.spritesheet('player-run', 'player-run.png', {
     frameWidth: 32, frameHeight: 32,
   });
 
@@ -28,4 +30,6 @@ export function preload(scene: Phaser.Scene): void {
   scene.load.spritesheet('box-3-break', 'box-3-break', {
     frameWidth: 24, frameHeight: 24,
   });
+
+  scene.load.addFile(new WebFontFile(scene.load, 'Press Start 2P'));
 }

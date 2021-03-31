@@ -1,7 +1,7 @@
 {
-  "name": "ppk-template",
+  "name": "dropbox",
   "version": "1.0.0",
-  "description": "Template repository untuk mata kuliah Pemrograman Permainan Komputer",
+  "description": "Dropbox game",
   "main": "",
   "scripts": {
     "dev": "vite",
@@ -14,17 +14,22 @@
     "url": "git+https://github.com/Namchee/ppk-template.git"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Cristopher Namchee",
+    "email": "cristophernamchee12@gmail.com"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Namchee/ppk-template/issues"
+    "url": "https://github.com/Namchee/dropbox/issues"
   },
-  "homepage": "https://github.com/Namchee/ppk-template#readme",
+  "homepage": "https://github.com/Namchee/dropbox#readme",
   "dependencies": {
     "phaser": "^3.53.1",
-    "vite": "^2.0.5"
+    "vite": "^2.0.5",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
+    "@types/webfontloader": "^1.6.32",
     "cross-env": "^7.0.3",
     "rimraf": "^3.0.2",
     "typescript": "^4.2.3"

@@ -1,9 +1,13 @@
 import Phaser from 'phaser';
 
+import { Player } from '../objects/player';
+import { FONT_CONFIG } from './utils';
+
 export class GameScene extends Phaser.Scene {
   private background!: Phaser.GameObjects.TileSprite;
   private terrain!: Phaser.GameObjects.TileSprite;
 
+  private player!: Player;
   private boxes!: Phaser.GameObjects.Group;
 
   public constructor() {
@@ -20,7 +24,10 @@ export class GameScene extends Phaser.Scene {
     this.terrain = this.add
       .tileSprite(0, Number(height), Number(width), 16, 'terrain', 2)
       .setOrigin(0, 0.5);
+    this.physics.world.setBounds(0, 0, Number(width), Number(height) - 8);
 
     this.boxes = this.add.group();
+
+    this.player = Player.create(this);
   }
 }

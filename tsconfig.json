@@ -70,7 +70,8 @@
   },
   "include": [
     "src/index.ts",
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "node_modules/phaser3-rex-plugins-types"
   ],
   "exclude": [
     "node_modules"

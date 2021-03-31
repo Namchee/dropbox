@@ -1,25 +1,100 @@
 import Phaser from 'phaser';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
+  private isLeftDown!: boolean;
+  private isRightDown!: boolean;
+
   constructor(
     scene: Phaser.Scene,
     x: number,
     y: number,
-
   ) {
     super(scene, x, y, 'player');
+
+    scene.physics.world.enable(this);
+    scene.add.existing(this);
   }
 
-  public static create(scene: Phaser.Scene) {
-    const { width } = scene.game.config;
+  public static create(scene: Phaser.Scene): Player {
+    const { width, height } = scene.game.config;
 
-    const player = new Player(scene, Number(width) / 2, 20);
-    player.setOrigin(Number(width) / 2, 20);
+    const player = new Player(scene, Number(width) / 2, Number(height) - 8);
+    player.setCollideWorldBounds(true);
+
+    player.initAnimations();
+    player.idle();
+
+    player.handleInput();
 
     return player;
   }
 
-  public animate() {
+  private initAnimations() {
+    this.anims.create({
+      key: 'chara-idle',
+      frames: this.anims.generateFrameNumbers('player', {}),
+      frameRate: 24,
+      repeat: -1,
+    });
 
+    this.anims.create({
+      key: 'chara-run',
+      frames: this.anims.generateFrameNumbers('player-run', {}),
+      frameRate: 24,
+      repeat: -1,
+    });
+  }
+
+  private handleInput() {
+    const leftArrow = this.scene.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.LEFT,
+    );
+
+    const rightArrow = this.scene.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.RIGHT,
+    );
+
+    leftArrow.on('down', () => {
+      this.isLeftDown = true;
+      this.walk(-100, true);
+    });
+
+    leftArrow.on('up', () => {
+      this.isLeftDown = false;
+
+      if (this.isRightDown) {
+        this.walk(100, false);
+      } else {
+        this.idle();
+      }
+    })
+
+    rightArrow.on('down', () => {
+      this.isRightDown = true;
+      this.walk(100, false);
+    });
+
+    rightArrow.on('up', () => {
+      this.isRightDown = false;
+  
+      if (this.isLeftDown) {
+        this.walk(-100, true);
+      } else {
+        this.idle();
+      }
+    });
+  }
+
+  public walk(speed: number, direction: boolean) {
+    this.setVelocityX(speed);
+    this.setFlipX(direction);
+
+    this.anims.play('chara-run');
+  }
+
+  private idle() {
+    this.setVelocityX(0);
+    
+    this.anims.play('chara-idle');
   }
 }
