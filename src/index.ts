@@ -6,8 +6,9 @@ import { ResultScene } from './scenes/result';
 
 const config = {
   type: AUTO,
-  width: 800,
-  height: 600,
+  width: 320,
+  height: 480,
+  background: 'transparent',
   physics: {
     default: 'arcade',
     arcade: {
