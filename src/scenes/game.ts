@@ -10,10 +10,10 @@ import { GameStorage } from '../state/storage';
 
 export class GameScene extends Phaser.Scene {
   private static readonly spawnTime: Record<string, number> = {
-    0: 1000,
-    25: 750,
-    50: 500,
-    100: 250,
+    0: 800,
+    25: 600,
+    50: 350,
+    100: 100,
   };
 
   private background!: Phaser.GameObjects.TileSprite;
@@ -77,14 +77,53 @@ export class GameScene extends Phaser.Scene {
     this.highScoreText.setOrigin(1, 0);
 
     this.spawnTime = 0;
-
-    this.boxes.add(Box.createRandomBox(this));
-    
-    this.setCollision();
   }
 
   public startGame() {
-    this.state.startGame();
+    const { width, height } = this.game.config;
+
+    let num = 3;
+  
+    const indicatorText = this.add.text(Number(width) / 2, Number(height) / 2, num.toString(), {
+      ...FONT_CONFIG,
+      fontSize: '48px',
+    });
+    const guideText = this.add.text(Number(width) / 2, Number(height) * 0.65, 'Use arrow keys to move your characters and avoid falling boxes!', {
+      ...FONT_CONFIG,
+      fontSize: '12px',
+      wordWrap: { width: 225 },
+      align: 'center',
+    });
+
+    indicatorText.setOrigin(0.5, 0.5);
+    guideText.setOrigin(0.5, 0.5);
+
+    const startEvent = this.time.addEvent({
+      delay: 1000,
+      loop: true,
+      callbackScope: this,
+      callback: () => {
+        num--;
+
+        if (isNaN(Number(indicatorText.text))) {
+          indicatorText.destroy();
+          guideText.destroy();
+
+          this.state.startGame();
+          this.boxes.add(Box.createRandomBox(this));
+          this.setCollision();
+          this.player.listenInputs();
+    
+          startEvent.destroy();
+        }
+
+        if (num > 0) {
+          indicatorText.setText(num.toString());
+        } else {
+          indicatorText.setText('GO!');
+        }
+      },
+    });
   }
 
   private setCollision() {
@@ -98,8 +137,10 @@ export class GameScene extends Phaser.Scene {
   
     const scoreProxy = new Proxy(originalState, {
       set: (target: GameState, key: string, value: any) => {
+        // @ts-ignore
+        target[key] = value;
+
         if (key === 'score') {
-          target[key] = value;
           this.setScore(value);
         }
 
@@ -111,11 +152,18 @@ export class GameScene extends Phaser.Scene {
   }
 
   public update(_: number, delta: number) {
+    if (!this.state.isRunning) {
+      return;
+    }
+
     this.boxes.children.each((child: Phaser.GameObjects.GameObject) => {
-      if (!child.active && !this.player.isDead) {
-        this.state.incrementScore();
+      if (!child.active) {
         this.boxes.killAndHide(child);
         this.boxes.remove(child);
+
+        if (!this.player.isDead) {
+          this.state.incrementScore();
+        }
       }
     });
 

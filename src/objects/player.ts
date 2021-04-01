@@ -30,8 +30,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     player.initAnimations();
     player.idle();
 
-    player.handleInput();
-
     return player;
   }
 
@@ -59,7 +57,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  private handleInput() {
+  public listenInputs() {
     const leftArrow = this.scene.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.LEFT,
     );

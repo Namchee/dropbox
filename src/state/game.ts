@@ -21,6 +21,7 @@ export class GameState {
   
   public startGame(): void {
     this._isRunning = true;
+    console.log(this.isRunning);
   }
 
   public stopGame(): void {
