@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 
-import { Player } from '../objects/player';
+import { Player } from './../objects/player';
+import { Box } from './../objects/box';
+
 import { FONT_CONFIG } from './utils';
 
 export class GameScene extends Phaser.Scene {
@@ -27,7 +29,9 @@ export class GameScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, Number(width), Number(height) - 8);
 
     this.boxes = this.add.group();
+    Box.createRandomBox(this);
 
-    this.player = Player.create(this);
+    // this.player = Player.create(this);
+    // this.boxes.add();
   }
 }
