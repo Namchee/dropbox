@@ -26,8 +26,8 @@ export class Box extends Phaser.Physics.Arcade.Image {
     const debris = this.debrisManager.createEmitter({
       frame: [0, 1, 2, 3],
       quantity: 8,
-      gravityY: 200,
-      lifespan: 2500,
+      gravityY: 250,
+      lifespan: 2250,
       maxParticles: 12,
       alpha: { start: 1.0, end: 0.0 },
       scale: { start: Box.SCALING[id] * 0.75, end: Box.SCALING[id] * 0.75 },
@@ -50,13 +50,13 @@ export class Box extends Phaser.Physics.Arcade.Image {
       scale:{ start: Box.SCALING[id] * 4, end: Box.SCALING[id] * 4 },
       alpha: { start: 1.0, end: 0.0 },
       quantity: 1,
-      lifespan: 2250,
+      lifespan: 2000,
     });
   }
 
   public static createRandomBox(
     scene: Phaser.Scene,
-    gravity: number = 200,
+    gravity: number = 250,
   ): Box {
     const id = (Math.floor(Math.random() * 3) + 1) as 1 | 2 | 3;
 
@@ -65,7 +65,7 @@ export class Box extends Phaser.Physics.Arcade.Image {
     const box = new Box(
       scene,
       Math.random() * Number(width),
-      0,
+      -16 * Box.SCALING[id],
       id,
     );
     box.setOrigin(0.5, 0.5);
@@ -76,16 +76,9 @@ export class Box extends Phaser.Physics.Arcade.Image {
     box.handleWorldCollision();
 
     box.setScale(Box.SCALING[id], Box.SCALING[id]);
-    box.setGravityY(gravity);
+    box.setGravityY(gravity * Box.SCALING[id]);
 
     return box;
-  }
-
-  public setCollider(
-    obj: Phaser.GameObjects.GameObject,
-    callback: ArcadePhysicsCallback,
-  ): void {
-    this.scene.physics.add.overlap(this, obj, callback);
   }
 
   private handleWorldCollision(): void {
@@ -100,7 +93,7 @@ export class Box extends Phaser.Physics.Arcade.Image {
         this.smokeManager.emitParticleAt(
           x + this.displayWidth / 2, y + this.displayHeight / 3);
         
-        this.setAlpha(0);
+        this.setVisible(false);
         this.setActive(false);
       }
     });
