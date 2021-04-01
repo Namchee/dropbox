@@ -44,6 +44,7 @@ export class GameScene extends Phaser.Scene {
 
     this.player = Player.create(this);
     this.player.setDepth(1);
+    this.player.setDieCallback(() => this.showResultScene());
 
     this.spawnTime = 0;
 
@@ -62,7 +63,7 @@ export class GameScene extends Phaser.Scene {
 
   public update(_: number, delta: number) {
     this.boxes.children.each((child: Phaser.GameObjects.GameObject) => {
-      if (!child.active && this.player) {
+      if (!child.active && !this.player.isDead) {
         this.state.incrementScore();
         this.boxes.killAndHide(child);
         this.boxes.remove(child);
@@ -86,5 +87,9 @@ export class GameScene extends Phaser.Scene {
       this.spawnTime = 0;
       this.boxes.add(Box.createRandomBox(this));
     }
+  }
+
+  private showResultScene() {
+    this.scene.launch('ResultScene', { state: this.state });
   }
 }

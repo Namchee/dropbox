@@ -119,6 +119,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   public die() {
     this.body.enable = false;
     this._isDead = true;
+
+    this.anims.stop();
     this.anims.play('chara-dead');
+  }
+
+  public setDieCallback(callback: Function) {
+    this.on('animationcomplete', callback);
   }
 }
