@@ -5,6 +5,7 @@ import { FONT_CONFIG } from './utils';
 
 export class ResultScene extends Phaser.Scene {
   private state!: GameState;
+  private isRecord!: boolean;
 
   public constructor() {
     super('ResultScene');
@@ -12,6 +13,7 @@ export class ResultScene extends Phaser.Scene {
 
   public init(data: any) {
     this.state = data.state as GameState;
+    this.isRecord = data.isRecord as boolean;
   }
 
   create() {
@@ -33,8 +35,9 @@ export class ResultScene extends Phaser.Scene {
       fontSize: '14px',
     });
 
-    const replayButton = this.add.image(Number(width) + 100, Number(height) / 2, 'restart');
-    const backButton = this.add.image(Number(width) + 50, Number(height) / 2, 'back');
+    const replayButton = this.add.image(Number(width) / 2 + 32, Number(height) + 100, 'restart');
+    const backButton = this.add.image(Number(width) / 2 - 32, Number(height) + 100, 'back');
+    let recordText: Phaser.GameObjects.Text;
 
     replayButton.setScale(1.75);
     replayButton.setInteractive({ cursor: 'pointer' });
@@ -43,6 +46,14 @@ export class ResultScene extends Phaser.Scene {
 
     titleText.setOrigin(0.5);
     scoreText.setOrigin(0.5);
+
+    if (this.isRecord) {
+      recordText = this.add.text(Number(width) + 100, Number(height) * 0.425, 'New Record!', {
+        ...FONT_CONFIG,
+        fontSize: '10px',
+      });
+      recordText.setOrigin(0.5);
+    }
 
     this.tweens.add({
       targets: texture,
@@ -62,16 +73,25 @@ export class ResultScene extends Phaser.Scene {
               duration: 1500,
             });
 
+            if (recordText) {
+              this.tweens.add({
+                targets: recordText,
+                x: Number(width) * 0.525,
+                ease: 'Power2',
+                duration: 1500,
+              });
+            }
+
             this.tweens.add({
               targets: replayButton,
-              x: Number(width) / 2 + replayButton.displayWidth * 0.8,
+              y: Number(height) * 0.525,
               ease: 'Power2',
               duration: 1500,
             });
 
             this.tweens.add({
               targets: backButton,
-              x: Number(width) / 2 - backButton.displayWidth * 0.8,
+              y: Number(height) * 0.525,
               ease: 'Power2',
               duration: 1500,
             });

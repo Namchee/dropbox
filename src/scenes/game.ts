@@ -6,12 +6,14 @@ import { Box } from './../objects/box';
 import { GameState } from '../state/game';
 
 import { FONT_CONFIG } from './utils';
+import { GameStorage } from '../state/storage';
 
 export class GameScene extends Phaser.Scene {
   private static readonly spawnTime: Record<string, number> = {
     0: 1000,
-    50: 750,
-    100: 500,
+    25: 750,
+    50: 500,
+    100: 250,
   };
 
   private background!: Phaser.GameObjects.TileSprite;
@@ -19,6 +21,9 @@ export class GameScene extends Phaser.Scene {
 
   private player!: Player;
   private boxes!: Phaser.GameObjects.Group;
+
+  private scoreText!: Phaser.GameObjects.Text;
+  private highScoreText!: Phaser.GameObjects.Text;
 
   private state!: GameState;
 
@@ -30,6 +35,8 @@ export class GameScene extends Phaser.Scene {
 
   public create() {
     const { width, height } = this.game.config;
+  
+    this.state = this.setState();
 
     this.background = this.add
       .tileSprite(0, 0, Number(width), Number(height), 'background')
@@ -46,19 +53,61 @@ export class GameScene extends Phaser.Scene {
     this.player.setDepth(1);
     this.player.setDieCallback(() => this.showResultScene());
 
+    const highScore = GameStorage.getInstance().highScore;
+
+    this.scoreText = this.add.text(
+      16,
+      16,
+      `SCORE: ${this.state.score.toString().padStart(5, '0')}`,
+      {
+        ...FONT_CONFIG,
+        fontSize: '12px',
+      },
+    );
+    this.highScoreText = this.add.text(
+      Number(width) - 16,
+      16,
+      `HI: ${highScore.toString().padStart(5, '0')}`,
+      {
+        ...FONT_CONFIG,
+        fontSize: '12px',
+      },
+    );
+
+    this.highScoreText.setOrigin(1, 0);
+
     this.spawnTime = 0;
 
-    this.state = new GameState();
-
     this.boxes.add(Box.createRandomBox(this));
+    
+    this.setCollision();
+  }
 
+  public startGame() {
+    this.state.startGame();
+  }
+
+  private setCollision() {
     this.physics.add.collider(this.player, this.boxes, () => {
       this.player.die();
     });
   }
 
-  public startGame() {
-    this.state.startGame();
+  private setState(): GameState {
+    const originalState = new GameState();
+  
+    const scoreProxy = new Proxy(originalState, {
+      set: (target: GameState, key: string, value: any) => {
+        if (key === 'score') {
+          target[key] = value;
+          this.setScore(value);
+        }
+
+        return true;
+      },
+    });
+
+    return scoreProxy;
   }
 
   public update(_: number, delta: number) {
@@ -89,7 +138,25 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  private setScore(value: number) {
+    this.scoreText.setText(`SCORE: ${value.toString().padStart(5, '0')}`);
+  }
+
   private showResultScene() {
-    this.scene.launch('ResultScene', { state: this.state });
+    const storage = GameStorage.getInstance();
+    const isRecord = storage.highScore < this.state.score;
+
+    if (isRecord) {
+      this.highScoreText.setText(`HI: ${this.state.score.toString().padStart(5, '0')}`);
+      storage.setHighScore(this.state.score);
+    }
+  
+    this.scene.launch(
+      'ResultScene',
+      {
+        state: this.state,
+        isRecord,
+      },
+    );
   }
 }

@@ -14,6 +14,10 @@ export class GameState {
   public get score() {
     return this._score;
   }
+
+  public set score(value: number) {
+    this._score = value;
+  }
   
   public startGame(): void {
     this._isRunning = true;
@@ -24,6 +28,6 @@ export class GameState {
   }
 
   public incrementScore(): void {
-    this._score++;
+    this.score = this.score + 1;
   }
 }
