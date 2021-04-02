@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { GameState } from '../state/game';
+import { GameScene } from './game';
 import { FONT_CONFIG } from './utils';
 
 export class ResultScene extends Phaser.Scene {
@@ -87,6 +88,20 @@ export class ResultScene extends Phaser.Scene {
               y: Number(height) * 0.525,
               ease: 'Power2',
               duration: 1500,
+              onComplete: () => {
+                replayButton.setInteractive({ cursor: 'pointer' });
+                replayButton.on('pointerup', () => {
+                  const gameScene = this.scene.get('GameScene') as GameScene;
+
+                  this.scene.setActive(false);
+                  this.scene.setVisible(false);
+                  this.scene.sendToBack();
+                  this.input.disable(backButton);
+                  this.input.disable(replayButton);
+
+                  gameScene.restart();
+                });
+              },
             });
 
             this.tweens.add({
@@ -94,10 +109,20 @@ export class ResultScene extends Phaser.Scene {
               y: Number(height) * 0.525,
               ease: 'Power2',
               duration: 1500,
+              onComplete: () => {
+                backButton.setInteractive({ cursor: 'pointer' });
+                backButton.on('pointerup', () =>{
+                  this.scene.start('HomeScene');
+                });
+              },
             });
           },
         });
       },
     });
+  }
+
+  private restart() {
+    this.scene
   }
 }

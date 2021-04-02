@@ -85,6 +85,10 @@ export class Box extends Phaser.Physics.Arcade.Image {
     const { height } = this.scene.game.config;
   
     this.body.world.on('worldbounds', () => {
+      if (!this.active) {
+        return;
+      }
+
       const { x, y } = this.body.position;
 
       if (Number(height) - (y + this.displayHeight) === 8) {

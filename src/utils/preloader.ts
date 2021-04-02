@@ -37,6 +37,7 @@ export function preload(scene: Phaser.Scene): void {
 
   scene.load.image('restart', 'buttons/restart.png');
   scene.load.image('back', 'buttons/back.png');
+  scene.load.image('play', 'buttons/play.png');
 
   scene.load.addFile(new WebFontFile(scene.load, 'Press Start 2P'));
 }

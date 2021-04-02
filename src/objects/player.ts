@@ -97,6 +97,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
+  public disableInputs() {
+    this.isLeftDown = false;
+    this.isRightDown = false;
+
+    this.scene.input.keyboard.removeKey(
+      Phaser.Input.Keyboard.KeyCodes.LEFT,
+    );
+
+    this.scene.input.keyboard.removeKey(
+      Phaser.Input.Keyboard.KeyCodes.RIGHT,
+    );
+  }
+
   private walk(speed: number, direction: boolean) {
     if (this.body.enable) {
       this.setVelocityX(speed);
@@ -112,6 +125,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     
       this.anims.play('chara-idle');
     }
+  }
+
+  public revive() {
+    this.body.enable = true;
+    this.setVisible(true);
+    this._isDead = false;
+
+    const { width, height } = this.scene.game.config;
+
+    this.setPosition(Number(width) / 2, Number(height) - 8);
+    this.setFlipX(false);
+
+    this.idle();
   }
 
   public die() {

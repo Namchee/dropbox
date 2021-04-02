@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import Phaser, { Game } from 'phaser';
 
 import { Player } from './../objects/player';
 import { Box } from './../objects/box';
@@ -36,7 +36,7 @@ export class GameScene extends Phaser.Scene {
   public create() {
     const { width, height } = this.game.config;
   
-    this.state = this.setState();
+    this.state = this.initState();
 
     this.background = this.add
       .tileSprite(0, 0, Number(width), Number(height), 'background')
@@ -84,11 +84,11 @@ export class GameScene extends Phaser.Scene {
 
     let num = 3;
   
-    const indicatorText = this.add.text(Number(width) / 2, Number(height) / 2, num.toString(), {
+    const indicatorText = this.add.text(Number(width) / 2, Number(height) * 0.45, num.toString(), {
       ...FONT_CONFIG,
       fontSize: '48px',
     });
-    const guideText = this.add.text(Number(width) / 2, Number(height) * 0.65, 'Use arrow keys to move your characters and avoid falling boxes!', {
+    const guideText = this.add.text(Number(width) / 2, Number(height) * 0.6, 'Use arrow keys to move your characters and avoid falling boxes!', {
       ...FONT_CONFIG,
       fontSize: '12px',
       wordWrap: { width: 225 },
@@ -107,10 +107,8 @@ export class GameScene extends Phaser.Scene {
 
         if (isNaN(Number(indicatorText.text))) {
           indicatorText.destroy();
-          guideText.destroy();
 
           this.state.startGame();
-          this.boxes.add(Box.createRandomBox(this));
           this.setCollision();
           this.player.listenInputs();
     
@@ -121,6 +119,7 @@ export class GameScene extends Phaser.Scene {
           indicatorText.setText(num.toString());
         } else {
           indicatorText.setText('GO!');
+          guideText.destroy();
         }
       },
     });
@@ -129,10 +128,11 @@ export class GameScene extends Phaser.Scene {
   private setCollision() {
     this.physics.add.collider(this.player, this.boxes, () => {
       this.player.die();
+      this.player.disableInputs();
     });
   }
 
-  private setState(): GameState {
+  private initState(): GameState {
     const originalState = new GameState();
   
     const scoreProxy = new Proxy(originalState, {
@@ -206,5 +206,23 @@ export class GameScene extends Phaser.Scene {
         isRecord,
       },
     );
+  }
+
+  public restart() {
+    this.cleanup();
+
+    this.startGame();
+  }
+
+  private cleanup() {
+    this.state = this.initState();
+    this.player.revive();
+
+    this.boxes.children.each((child: Phaser.GameObjects.GameObject) => {
+      this.boxes.remove(child);
+
+      child.setActive(false);
+      child.destroy();
+    });
   }
 }
