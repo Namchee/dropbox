@@ -10,14 +10,11 @@ import { GameStorage } from '../state/storage';
 
 export class GameScene extends Phaser.Scene {
   private static readonly spawnTime: Record<string, number> = {
-    0: 800,
+    0: 850,
     25: 600,
-    50: 350,
+    50: 250,
     100: 100,
   };
-
-  private background!: Phaser.GameObjects.TileSprite;
-  private terrain!: Phaser.GameObjects.TileSprite;
 
   private player!: Player;
   private boxes!: Phaser.GameObjects.Group;
@@ -38,12 +35,10 @@ export class GameScene extends Phaser.Scene {
   
     this.state = this.initState();
 
-    this.background = this.add
-      .tileSprite(0, 0, Number(width), Number(height), 'background')
+    this.add.tileSprite(0, 0, Number(width), Number(height), 'background')
       .setOrigin(0, 0);
 
-    this.terrain = this.add
-      .tileSprite(0, Number(height), Number(width), 16, 'terrain', 2)
+    this.add.tileSprite(0, Number(height), Number(width), 16, 'terrain', 2)
       .setOrigin(0, 0.5);
     this.physics.world.setBounds(0, 0, Number(width), Number(height) - 8);
 
@@ -51,7 +46,10 @@ export class GameScene extends Phaser.Scene {
 
     this.player = Player.create(this);
     this.player.setDepth(1);
-    this.player.setDieCallback(() => this.showResultScene());
+    this.player.setDieCallback(() => {
+      this.sound.play('die');
+      this.showResultScene();
+    });
 
     const highScore = GameStorage.getInstance().highScore;
 
@@ -98,6 +96,8 @@ export class GameScene extends Phaser.Scene {
     indicatorText.setOrigin(0.5, 0.5);
     guideText.setOrigin(0.5, 0.5);
 
+    this.sound.play('tick');
+
     const startEvent = this.time.addEvent({
       delay: 1000,
       loop: true,
@@ -116,8 +116,10 @@ export class GameScene extends Phaser.Scene {
         }
 
         if (num > 0) {
+          this.sound.play('tick');
           indicatorText.setText(num.toString());
         } else {
+          this.sound.play('tick');
           indicatorText.setText('GO!');
           guideText.destroy();
         }
@@ -158,6 +160,7 @@ export class GameScene extends Phaser.Scene {
 
     this.boxes.children.each((child: Phaser.GameObjects.GameObject) => {
       if (!child.active) {
+        this.sound.play('break');
         this.boxes.killAndHide(child);
         this.boxes.remove(child);
 
@@ -217,6 +220,7 @@ export class GameScene extends Phaser.Scene {
   private cleanup() {
     this.state = this.initState();
     this.player.revive();
+    this.input.setDefaultCursor('default');
 
     this.boxes.children.each((child: Phaser.GameObjects.GameObject) => {
       this.boxes.remove(child);

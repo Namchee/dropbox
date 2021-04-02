@@ -46,6 +46,8 @@ export class HomeScene extends Phaser.Scene {
             alpha: 0,
             duration: 250,
             onComplete: () => {
+              this.sound.play('button');
+
               this.scene.sendToBack();
               (this.scene.get('GameScene') as GameScene).startGame();
             },

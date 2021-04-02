@@ -39,5 +39,10 @@ export function preload(scene: Phaser.Scene): void {
   scene.load.image('back', 'buttons/back.png');
   scene.load.image('play', 'buttons/play.png');
 
+  scene.load.audio('tick', 'sfx/tick.wav');
+  scene.load.audio('break', 'sfx/break.wav');
+  scene.load.audio('die', 'sfx/die.wav');
+  scene.load.audio('button', 'sfx/button.wav');
+
   scene.load.addFile(new WebFontFile(scene.load, 'Press Start 2P'));
 }
