@@ -13,3 +13,10 @@ jobs:
         runs: yarn --frozen-lockfile
       - name: Build the files
         runs: yarn build
+      - name: Deploy to GitHub pages
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "chore(ci): Deploy to GitHub pages"
+          git push
