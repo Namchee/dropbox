@@ -1,24 +1,19 @@
-# Template Tugas PPK
+# Drop.Box
 
-Repositori ini adalah repositori _template_ untuk mempercepat pengembangan permainan komputer menggunakan [Phaser](https://phaser.io/). Dibuat oleh 2017730017. 
+Drop.Box adalah sebuah permainan _dodge objects_ sederhana menggunakan _engine_ Phaser. Dibuat sebagai pemenuhan tugas mata kuliah Pemrograman Permainan Komputer, namun saya memutuskan untuk _go beyond the requirements_.
+
+Dibuat oleh 2017730017.
+
+## Cara Bermain
+
+Hindari boks-boks yang berjatuhan dari langit-langit. Anda dapat menggerakan pemain menggunakan tombol kiri dan kanan pada _keyboard_ Anda.
+
+Skor tertinggi Anda akan disimpan menggunakan `localStorage`.
 
 ## Memulai
 
-> Pastikan Anda memiliki `pnpm` di komputer Anda. Apabila tidak, `npm` bisa jadi alternatif.
+> Pastikan Anda memiliki sebuah _node package manager_ di komputer Anda. Pada instruksi ini, _package manager_ yang digunakan adalah `yarn`
 
 1. Clone repositori ini.
-2. Jalankan perintah `pnpm install` atau `npm install` melalui _terminal_ Anda.
-3. Kerjakan
-3. Jalankan perintah `pnpm run build` atau `npm run build` untuk membangun kode perangkat lunak.
-
-> Jangan dicopas, kerjain tugasnya sendiri!
-
-### Dosen
-
-Karena projectnya sudah di_build_, cukup jalankan sebuah web server dengan `dist` sebagai root directory. Salah satu cara termudah untuk melakukannya adalah menggunakan `serve` melalui `npx serve dist`
-
-## Fitur
-
-1. _Hot-reloading_ menggunakan [`vite`](https://vitejs.dev/)
-2. _Package-manager_ yang _disk-efficient_ menggunakan [`pnpm`](https://pnpm.js.org/)
-3. _Static-type checking_ menggunakan [TypeScript](https://www.typescriptlang.org/)
+2. Jalankan perintah `yarn` untuk mengunduh kebutuhan perangkat lunak.
+3. Jalankan perintah `yarn build` untuk membangun kode perangkat lunak.

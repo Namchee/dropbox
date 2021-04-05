@@ -1,4 +1,4 @@
-import Phaser, { Game } from 'phaser';
+import Phaser from 'phaser';
 
 import { Player } from './../objects/player';
 import { Box } from './../objects/box';

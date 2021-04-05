@@ -2,6 +2,7 @@
   "name": "dropbox",
   "version": "1.0.0",
   "description": "Dropbox game",
+  "private": true,
   "main": "",
   "scripts": {
     "dev": "vite",
