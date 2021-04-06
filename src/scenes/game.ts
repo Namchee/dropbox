@@ -10,8 +10,8 @@ import { GameStorage } from '../state/storage';
 
 export class GameScene extends Phaser.Scene {
   private static readonly spawnTime: Record<string, number> = {
-    0: 850,
-    25: 600,
+    0: 750,
+    25: 500,
     50: 250,
     100: 100,
   };
@@ -113,6 +113,8 @@ export class GameScene extends Phaser.Scene {
           this.player.listenInputs();
     
           startEvent.destroy();
+
+          return;
         }
 
         if (num > 0) {
