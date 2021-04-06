@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Namchee/dropbox#readme",
   "dependencies": {
+    "husky": "^6.0.0",
     "phaser": "^3.53.1",
     "vite": "^2.0.5",
     "webfontloader": "^1.6.28"
