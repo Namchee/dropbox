@@ -3,7 +3,6 @@ import Phaser from 'phaser';
 export class Player extends Phaser.Physics.Arcade.Sprite {
   private isLeftDown!: boolean;
   private isRightDown!: boolean;
-  private isMouseDown!: boolean;
 
   public _isDead!: boolean;
 
@@ -67,46 +66,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       Phaser.Input.Keyboard.KeyCodes.RIGHT,
     );
 
-    this.scene.input.on('pointerdown', (pointer: PointerEvent) => {
-      this.isMouseDown = true;
-
-      const { x } = pointer;
-      const isMovingLeft = x < Number(this.scene.game.config.width) / 2;
-
-      if (isMovingLeft) {
-        this.walk(-150, true);
-      } else {
-        this.walk(150, false);
-      }
-    });
-
-    this.scene.input.on('pointermove', (event: PointerEvent) => {
-      if (!this.isMouseDown) {
-        return;
-      }
-
-      const { x } = event;
-      const isMovingLeft = x < Number(this.scene.game.config.width) / 2;
-
-      if (isMovingLeft && this.body.velocity.x == 150) {
-        this.walk(-150, true);
-      } else if (this.flipX && this.body.velocity.x == -150) {
-        this.walk(150, false);
-      }
-    });
-
-    this.scene.input.on('pointerup', () => {
-      this.isMouseDown = false;
-
-      if (this.isRightDown) {
-        this.walk(150, false);
-      } else if (this.isLeftDown) {
-        this.walk(-150, true);
-      } else {
-        this.idle();
-      }
-    });
-
     leftArrow.on('down', () => {
       this.isLeftDown = true;
       this.walk(-150, true);
@@ -149,10 +108,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.input.keyboard.removeKey(
       Phaser.Input.Keyboard.KeyCodes.RIGHT,
     );
-
-    this.scene.input.removeListener('pointerup');
-    this.scene.input.removeListener('pointermove');
-    this.scene.input.removeListener('pointerdown');
   }
 
   private walk(speed: number, direction: boolean) {
