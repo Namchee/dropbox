@@ -111,6 +111,8 @@ export class GameScene extends Phaser.Scene {
           this.state.startGame();
           this.setCollision();
           this.player.listenInputs();
+
+          this.boxes.add(Box.createRandomBox(this));
     
           startEvent.destroy();
 
