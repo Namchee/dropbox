@@ -35,9 +35,14 @@ export function preload(scene: Phaser.Scene): void {
 
   scene.load.image('smoke', '/dropbox/fx/smoke.png');
 
+  scene.load.image('home', '/dropbox/buttons/home.png');
+  scene.load.image('home-pressed', '/dropbox/buttons/home-pressed.png');
   scene.load.image('restart', '/dropbox/buttons/restart.png');
-  scene.load.image('back', '/dropbox/buttons/back.png');
+  scene.load.image('restart-pressed', '/dropbox/buttons/restart-pressed.png');
   scene.load.image('play', '/dropbox/buttons/play.png');
+  scene.load.image('play-pressed', '/dropbox/buttons/play-pressed.png');
+  scene.load.image('volume-on', '/dropbox/buttons/volume-on.png');
+  scene.load.image('volume-off', '/dropbox/buttons/volume-off.png');
 
   scene.load.audio('tick', '/dropbox/sfx/tick.wav');
   scene.load.audio('break', '/dropbox/sfx/break.wav');

@@ -120,13 +120,13 @@ export class GameScene extends Phaser.Scene {
         }
 
         if (num > 0) {
-          this.sound.play('tick');
           indicatorText.setText(num.toString());
         } else {
-          this.sound.play('tick');
           indicatorText.setText('GO!');
           guideText.destroy();
         }
+
+        this.sound.play('tick');
       },
     });
   }
