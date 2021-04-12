@@ -1,6 +1,6 @@
 # Drop.Box
 
-Drop.Box adalah sebuah permainan _dodge objects_ sederhana menggunakan _engine_ Phaser. Dibuat sebagai pemenuhan tugas mata kuliah Pemrograman Permainan Komputer, namun saya memutuskan untuk _go beyond the requirements_.
+Drop.Box adalah sebuah permainan _dodge objects_ sederhana menggunakan _engine_ Phaser. Dibuat sebagai pemenuhan tugas mata kuliah Pemrograman Permainan Komputer, namun saya memutuskan untuk _go beyond the requirements_. Seluruh asset yang digunakan diundah dari [itch.io](https://itch.io/game-assets).
 
 Dibuat oleh 2017730017.
 
