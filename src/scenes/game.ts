@@ -22,6 +22,8 @@ export class GameScene extends Phaser.Scene {
   private scoreText!: Phaser.GameObjects.Text;
   private highScoreText!: Phaser.GameObjects.Text;
 
+  private bgTexture!: Phaser.GameObjects.TileSprite;
+
   private state!: GameState;
 
   private spawnTime!: number;
@@ -35,7 +37,7 @@ export class GameScene extends Phaser.Scene {
   
     this.state = this.initState();
 
-    this.add.tileSprite(0, 0, Number(width), Number(height), 'background')
+    this.bgTexture = this.add.tileSprite(0, 0, Number(width), Number(height), 'background')
       .setOrigin(0, 0);
 
     this.add.tileSprite(0, Number(height), Number(width), 16, 'terrain', 2)
@@ -158,6 +160,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   public update(_: number, delta: number) {
+    this.bgTexture.tilePositionY += 0.25;
+
     if (!this.state.isRunning) {
       return;
     }
