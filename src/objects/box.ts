@@ -57,7 +57,7 @@ export class Box extends Phaser.Physics.Arcade.Image {
 
   public static createRandomBox(
     scene: Phaser.Scene,
-    gravity: number = 250,
+    gravity: number = 300,
   ): Box {
     const id = (Math.floor(Math.random() * 3) + 1) as 1 | 2 | 3;
 

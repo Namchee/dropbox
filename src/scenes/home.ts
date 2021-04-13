@@ -47,6 +47,11 @@ export class HomeScene extends Phaser.Scene {
     this.sfxButton.setScale(1.25);
     this.sfxButton.setAlpha(0);
 
+    if (this.sound.volume === 0) {
+      this.sfxButton.setTexture('volume-off');
+      this.sfx = false;
+    }
+
     this.tweens.add({
       targets: [this.playButton, this.sfxButton, this.titleText],
       alpha: 1,

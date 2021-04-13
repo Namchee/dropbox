@@ -26,6 +26,8 @@ export class GameScene extends Phaser.Scene {
 
   private state!: GameState;
 
+  private difficulty!: number;
+
   private spawnTime!: number;
 
   public constructor() {
@@ -81,6 +83,8 @@ export class GameScene extends Phaser.Scene {
 
   public startGame() {
     const { width, height } = this.game.config;
+
+    this.difficulty = 0;
 
     let num = 3;
   
@@ -184,11 +188,16 @@ export class GameScene extends Phaser.Scene {
     const keys = Object.keys(GameScene.spawnTime);
 
     for (let i = 0; i < keys.length; i++) {
-      if (this.state.score >= GameScene.spawnTime[keys[i]]) {
+      if (this.state.score >= Number(keys[i])) {
         upperBound = keys[i];
       } else {
         break;
       }
+    }
+
+    if (Number(upperBound) !== this.difficulty) {
+      this.sound.play('difficulty');
+      this.difficulty = Number(upperBound);
     }
 
     this.spawnTime += delta;
