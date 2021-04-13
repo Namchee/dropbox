@@ -3,8 +3,9 @@ import Phaser from 'phaser';
 export class Player extends Phaser.Physics.Arcade.Sprite {
   private isLeftDown!: boolean;
   private isRightDown!: boolean;
+  private isPointerDown!: boolean;
 
-  public _isDead!: boolean;
+  private _isDead!: boolean;
 
   public constructor(
     scene: Phaser.Scene,
@@ -28,7 +29,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     player.setCollideWorldBounds(true);
 
     player.initAnimations();
-    player.idle();
+    player.anims.play('chara-idle');
 
     return player;
   }
@@ -57,6 +58,44 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
+  public update() {
+    if (this.isPointerDown) {
+      const { x: pointerX } = this.scene.input.activePointer;
+      const { x: bodyX } = this.body.position;
+      const centerPoint = this.displayWidth / 2;
+
+      const bodyPosition = bodyX + centerPoint;
+
+      if (Math.abs(pointerX - bodyPosition) < 4) {
+        this.idle();
+        
+        if (this.anims.getName() !== 'chara-idle') {
+          this.anims.play('chara-idle');
+        }
+      } else if (Number(pointerX) > bodyPosition) {
+        this.walk(1);
+
+        if (this.anims.getName() !== 'chara-run') {
+          this.anims.play('chara-run');
+        }
+      } else if (Number(pointerX) < bodyPosition) {
+        this.walk(-1);
+
+        if (this.anims.getName() !== 'chara-run') {
+          this.anims.play('chara-run');
+        }
+      }
+    } else {
+      if (this.isLeftDown) {
+        this.walk(-1);
+      } else if (this.isRightDown) {
+        this.walk(1);
+      } else {
+        this.idle();
+      }
+    }
+  }
+
   public listenInputs() {
     const leftArrow = this.scene.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.LEFT,
@@ -66,33 +105,42 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       Phaser.Input.Keyboard.KeyCodes.RIGHT,
     );
 
+    this.scene.input.on('pointerdown', () => {
+      this.isPointerDown = true;
+      this.anims.play('chara-run');
+    });
+    
+    this.scene.input.on('pointerup', () => {
+      this.isPointerDown = false;
+
+      if (!this.isLeftDown && !this.isRightDown) {
+        this.anims.play('chara-idle');
+      }
+    });
+
     leftArrow.on('down', () => {
       this.isLeftDown = true;
-      this.walk(-150, true);
+      this.anims.play('chara-run');
     });
 
     leftArrow.on('up', () => {
       this.isLeftDown = false;
 
-      if (this.isRightDown) {
-        this.walk(150, false);
-      } else {
-        this.idle();
+      if (!this.isPointerDown && !this.isRightDown) {
+        this.anims.play('chara-idle');
       }
     })
 
     rightArrow.on('down', () => {
       this.isRightDown = true;
-      this.walk(150, false);
+      this.anims.play('chara-run');
     });
 
     rightArrow.on('up', () => {
       this.isRightDown = false;
-  
-      if (this.isLeftDown) {
-        this.walk(-150, true);
-      } else {
-        this.idle();
+
+      if (!this.isPointerDown && !this.isLeftDown) {
+        this.anims.play('chara-idle');
       }
     });
   }
@@ -100,6 +148,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   public disableInputs() {
     this.isLeftDown = false;
     this.isRightDown = false;
+    this.isPointerDown = false;
 
     this.scene.input.keyboard.removeKey(
       Phaser.Input.Keyboard.KeyCodes.LEFT,
@@ -108,22 +157,26 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.input.keyboard.removeKey(
       Phaser.Input.Keyboard.KeyCodes.RIGHT,
     );
+
+    this.scene.input.removeAllListeners('pointerup');
+    this.scene.input.removeAllListeners('pointerdown');
   }
 
-  private walk(speed: number, direction: boolean) {
+  private walk(direction: -1 | 1) {
     if (this.body.enable) {
-      this.setVelocityX(speed);
-      this.setFlipX(direction);
-
-      this.anims.play('chara-run');
+      if (direction === -1) {
+        this.setVelocityX(-150);
+        this.setFlipX(true);
+      } else {
+        this.setVelocityX(150);
+        this.setFlipX(false);
+      }
     }
   }
 
   private idle() {
     if (this.body.enable) {
       this.setVelocityX(0);
-    
-      this.anims.play('chara-idle');
     }
   }
 

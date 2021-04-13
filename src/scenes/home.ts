@@ -39,13 +39,11 @@ export class HomeScene extends Phaser.Scene {
     this.titleText.setAlpha(0);
 
     this.playButton = this.add.image(Number(width) / 2, Number(height) * 0.525, 'play');
-    this.playButton.setFrame(0);
     this.playButton.setOrigin(0.5, 0.5);
     this.playButton.setScale(2.25);
     this.playButton.setAlpha(0);
 
     this.sfxButton = this.add.image(Number(width) - 24, Number(height) - 24, 'volume-on');
-    this.sfxButton.setFrame(1);
     this.sfxButton.setScale(1.25);
     this.sfxButton.setAlpha(0);
 
@@ -77,6 +75,7 @@ export class HomeScene extends Phaser.Scene {
     this.playButton.on('pointerup', () => {
       this.sound.play('button');
       this.playButton.setTexture('play');
+      this.playButton.removeInteractive();
 
       this.tweens.add({
         targets: [this.bgTexture, this.playButton, this.sfxButton, this.titleText],

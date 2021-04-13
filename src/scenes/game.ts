@@ -88,7 +88,7 @@ export class GameScene extends Phaser.Scene {
       ...FONT_CONFIG,
       fontSize: '48px',
     });
-    const guideText = this.add.text(Number(width) / 2, Number(height) * 0.6, 'Use arrow keys to move your characters and avoid falling boxes!', {
+    const guideText = this.add.text(Number(width) / 2, Number(height) * 0.6, 'Use your mouse and keyboard to move your characters and avoid falling boxes!', {
       ...FONT_CONFIG,
       fontSize: '12px',
       wordWrap: { width: 225 },
@@ -165,6 +165,8 @@ export class GameScene extends Phaser.Scene {
     if (!this.state.isRunning) {
       return;
     }
+
+    this.player.update();
 
     this.boxes.children.each((child: Phaser.GameObjects.GameObject) => {
       if (!child.active) {

@@ -27,8 +27,9 @@ export class Box extends Phaser.Physics.Arcade.Image {
       frame: [0, 1, 2, 3],
       quantity: 8,
       gravityY: 250,
-      lifespan: 2250,
-      maxParticles: 12,
+      lifespan: { min: 2000, max: 2250 },
+      bounce: { min: 0, max: 0.35 },
+      maxParticles: 8,
       alpha: { start: 1.0, end: 0.0 },
       scale: { start: Box.SCALING[id] * 0.75, end: Box.SCALING[id] * 0.75 },
       on: false,
@@ -93,7 +94,7 @@ export class Box extends Phaser.Physics.Arcade.Image {
 
       if (Number(height) - (y + this.displayHeight) === 8) {
         this.debrisManager.emitParticleAt(
-          x + this.displayWidth / 2, y + this.displayHeight * 0.8);
+          x + this.displayWidth / 2, y + this.displayHeight * 0.85);
         this.smokeManager.emitParticleAt(
           x + this.displayWidth / 2, y + this.displayHeight / 3);
         
