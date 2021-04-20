@@ -58,7 +58,7 @@ export class PreloaderScene extends Phaser.Scene {
     assetText.setOrigin(0.5, 0.5);
 
     this.load.on('progress', (value: string) => {
-      percentText.setText(`${parseInt(value) * 100}%`);
+      percentText.setText(`${(Number(value) * 100).toFixed(2)}%`);
       progressBar.clear();
       progressBar.fillStyle(0xF4F4F5, 0.25);
       progressBar.fillRect(width / 6, 227.5, Number(value) * width * 0.7, 25);
@@ -82,7 +82,7 @@ export class PreloaderScene extends Phaser.Scene {
 
           this.scene.sendToBack();
 
-          this.scene.launch('HomeScene');
+          this.scene.start('HomeScene');
         },
       });
     });
