@@ -1,5 +1,6 @@
 import { Game, AUTO } from 'phaser';
 
+import { PreloaderScene } from './scenes/preload';
 import { HomeScene } from './scenes/home';
 import { GameScene } from './scenes/game';
 import { ResultScene } from './scenes/result';
@@ -16,7 +17,7 @@ const config = {
     }
   },
   parent: 'game',
-  scene: [HomeScene, GameScene, ResultScene],
+  scene: [PreloaderScene, HomeScene, GameScene, ResultScene],
 };
 
 new Game(config);

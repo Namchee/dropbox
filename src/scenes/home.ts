@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-import { preload } from './../utils/preloader';
 import { GameScene } from './game';
 import { FONT_CONFIG } from './utils';
 
@@ -16,10 +15,6 @@ export class HomeScene extends Phaser.Scene {
 
   public constructor() {
     super('HomeScene');
-  }
-
-  public preload() {
-    preload(this);
   }
 
   create() {
