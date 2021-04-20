@@ -26,8 +26,8 @@ export class PreloaderScene extends Phaser.Scene {
       Number(height) / 2 - 50,
       'Loading...',
       {
-        fontFamily: 'Courier New',
-        fontSize: '20px',
+        fontFamily: 'Consolas, "Courier New"',
+        fontSize: '24px',
       },
     );
 
@@ -38,8 +38,8 @@ export class PreloaderScene extends Phaser.Scene {
       Number(height) / 2,
       '0%',
       {
-        fontFamily: 'Courier New',
-        fontSize: '16px',
+        fontFamily: 'Consolas, "Courier New"',
+        fontSize: '18px',
       },
     );
 
@@ -47,11 +47,11 @@ export class PreloaderScene extends Phaser.Scene {
 
     const assetText = this.add.text(
       Number(width) / 2,
-      Number(height) / 2 + 50,
+      Number(height) / 2 + 40,
       '',
       {
-        fontFamily: 'Courier New',
-        fontSize: '12px',
+        fontFamily: 'Consolas, "Courier New"',
+        fontSize: '16px',
       },
     );
 
@@ -138,6 +138,6 @@ export class PreloaderScene extends Phaser.Scene {
 
     this.load.addFile(
       new WebFontFile(this.load, 'Press Start 2P'),
-    );
+    )
   }
 }
