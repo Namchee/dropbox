@@ -183,6 +183,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   public revive() {
     this.body.enable = true;
     this.setVisible(true);
+
+    this.anims.play('chara-idle');
     this._isDead = false;
 
     const { width, height } = this.scene.game.config;

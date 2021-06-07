@@ -9,11 +9,11 @@ export class GameStorage {
     return GameStorage.instance;
   }
 
-  public get highScore() {
+  public get highScore(): number {
     return Number(localStorage.getItem('high-score')) || 0;
   }
 
-  public setHighScore(value: number) {
+  public setHighScore(value: number): void {
     localStorage.setItem('high-score', value.toString());
   }
 }
